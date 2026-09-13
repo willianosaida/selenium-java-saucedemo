@@ -1,0 +1,37 @@
+name: Testes Web
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Baixar o projeto
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 25 e cache do Maven
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "25"
+          cache: maven
+
+      - name: Executar os testes em Chrome headless
+        run: mvn --batch-mode clean test -Dheadless=true -Dbrowser=chrome
+
+      - name: Publicar resultados e screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidencias-testes
+          path: |
+            target/surefire-reports/
+            target/screenshots/
+          if-no-files-found: warn
+          retention-days: 14
