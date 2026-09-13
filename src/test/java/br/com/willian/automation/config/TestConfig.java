@@ -5,17 +5,20 @@ import java.io.InputStream;
 import java.time.Duration;
 import java.util.Properties;
 
+// Centraliza os valores do ambiente para evitar repetir URL, credenciais e tempos nos testes.
 public final class TestConfig {
 
     private static final String CONFIG_FILE = "config.properties";
     private static final Properties PROPERTIES = loadProperties();
 
     private TestConfig() {
+        // Usamos os métodos pela classe, sem precisar criar um objeto TestConfig.
     }
 
     private static Properties loadProperties() {
         Properties properties = new Properties();
 
+        // Lê o recurso de src/test/resources. O try fecha o arquivo automaticamente ao terminar.
         try (InputStream input = TestConfig.class.getClassLoader().getResourceAsStream(CONFIG_FILE)) {
             if (input == null) {
                 throw new IllegalStateException("Arquivo não encontrado no classpath: " + CONFIG_FILE);
@@ -28,6 +31,7 @@ public final class TestConfig {
     }
 
     private static String value(String key) {
+        // Uma opção enviada com -D no Maven tem prioridade sobre o arquivo de configuração.
         String systemValue = System.getProperty(key);
         if (systemValue != null && !systemValue.isBlank()) {
             return systemValue.trim();
@@ -53,6 +57,7 @@ public final class TestConfig {
     }
 
     public static Duration timeout() {
+        // Converte os segundos escritos no arquivo em uma duração usada pelas esperas do Selenium.
         return Duration.ofSeconds(Long.parseLong(value("timeout.seconds")));
     }
 

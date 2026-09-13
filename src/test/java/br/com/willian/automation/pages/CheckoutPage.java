@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+// Reúne as etapas do checkout: dados do cliente, resumo e confirmação da compra.
 public class CheckoutPage extends BasePage {
 
     private final By firstNameInput = By.id("first-name");
@@ -21,6 +22,7 @@ public class CheckoutPage extends BasePage {
     }
 
     public CheckoutPage fillCustomerData(String firstName, String lastName, String postalCode) {
+        // Os dados vêm do teste, permitindo reutilizar a ação em diferentes cenários.
         type(firstNameInput, firstName);
         type(lastNameInput, lastName);
         type(postalCodeInput, postalCode);
@@ -29,6 +31,7 @@ public class CheckoutPage extends BasePage {
 
     public CheckoutPage continueToOverview() {
         click(continueButton);
+        // Esta classe representa várias etapas; retornar this permite encadear as ações.
         return this;
     }
 
@@ -37,6 +40,7 @@ public class CheckoutPage extends BasePage {
     }
 
     public String total() {
+        // Entrega o texto exibido no site; a regra de validação fica no teste.
         return text(totalLabel);
     }
 

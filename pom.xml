@@ -10,7 +10,9 @@
     <name>Selenium Java - SauceDemo</name>
     <description>Projeto de automação de testes Web com Java, Selenium e JUnit.</description>
 
+    <!-- Centraliza versões e opções usadas pelo Maven para preparar o projeto. -->
     <properties>
+        <!-- O código é compilado para Java 17; o pipeline usa um JDK 25 para executar o Maven. -->
         <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -19,6 +21,7 @@
         <surefire.version>3.5.4</surefire.version>
     </properties>
 
+    <!-- O BOM mantém as versões dos componentes do JUnit alinhadas entre si. -->
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -31,7 +34,9 @@
         </dependencies>
     </dependencyManagement>
 
+    <!-- Dependências são bibliotecas externas utilizadas pelo nosso código. -->
     <dependencies>
+        <!-- Selenium fornece os comandos para controlar o navegador. -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
@@ -40,6 +45,7 @@
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
+            <!-- JUnit identifica os testes e oferece as verificações (assertions). -->
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
@@ -49,12 +55,14 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <!-- Compila os arquivos Java antes da execução. -->
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.14.1</version>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <!-- Executa os testes na fase test e grava seus resultados em target. -->
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${surefire.version}</version>
                 <configuration>
@@ -65,6 +73,7 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <!-- Transforma os resultados dos testes em um relatório HTML para leitura. -->
                 <artifactId>maven-surefire-report-plugin</artifactId>
                 <version>${surefire.version}</version>
                 <configuration>

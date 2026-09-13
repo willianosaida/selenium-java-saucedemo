@@ -1,5 +1,6 @@
 name: Testes Web
 
+# Gatilhos: push nas branches abaixo, pull requests e execução manual pelo GitHub.
 on:
   push:
     branches: [main, master]
@@ -8,6 +9,7 @@ on:
 
 jobs:
   testes:
+    # O GitHub disponibiliza uma máquina Linux para executar este job (conjunto de etapas).
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -22,10 +24,12 @@ jobs:
           java-version: "25"
           cache: maven
 
+      # Headless permite executar o navegador sem exibir uma janela na máquina do pipeline.
       - name: Executar os testes em Chrome headless
         run: mvn --batch-mode clean test -Dheadless=true -Dbrowser=chrome
 
       - name: Publicar resultados e screenshots
+        # Tenta guardar evidências mesmo quando uma etapa anterior falha.
         if: always()
         uses: actions/upload-artifact@v4
         with:

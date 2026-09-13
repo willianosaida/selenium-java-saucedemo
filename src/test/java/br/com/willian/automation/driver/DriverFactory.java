@@ -10,6 +10,7 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
+// Fábrica: concentra a criação do WebDriver conforme o navegador escolhido na configuração.
 public final class DriverFactory {
 
     private DriverFactory() {
@@ -23,12 +24,14 @@ public final class DriverFactory {
             case EDGE -> new EdgeDriver(edgeOptions());
         };
 
+        // Padroniza o tamanho da janela para reduzir variações no layout durante os testes.
         driver.manage().window().setSize(
                 new Dimension(TestConfig.windowWidth(), TestConfig.windowHeight()));
         return driver;
     }
 
     private static ChromeOptions chromeOptions() {
+        // Headless executa sem janela visível, como no pipeline de integração contínua.
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-notifications", "--disable-search-engine-choice-screen");
         if (TestConfig.headless()) {

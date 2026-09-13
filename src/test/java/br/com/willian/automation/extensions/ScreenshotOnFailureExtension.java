@@ -12,6 +12,8 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
+// O JUnit chama esta extensão após o método de teste e antes do @AfterEach fechar o navegador.
+// A imagem ajuda a investigar a falha, mas não substitui a mensagem de erro do teste.
 public class ScreenshotOnFailureExtension implements AfterTestExecutionCallback {
 
     private static final Path SCREENSHOT_DIRECTORY = Path.of("target", "screenshots");
@@ -20,6 +22,7 @@ public class ScreenshotOnFailureExtension implements AfterTestExecutionCallback 
     @Override
     public void afterTestExecution(ExtensionContext context) {
         if (context.getExecutionException().isEmpty()) {
+            // Sem erro no método de teste, não precisamos registrar uma imagem.
             return;
         }
 
@@ -28,6 +31,7 @@ public class ScreenshotOnFailureExtension implements AfterTestExecutionCallback 
             return;
         }
 
+        // Só tenta capturar se houver um driver disponível para esta execução.
         provider.currentWebDriver().ifPresent(driver -> saveScreenshot(driver, context.getDisplayName()));
     }
 
@@ -38,6 +42,7 @@ public class ScreenshotOnFailureExtension implements AfterTestExecutionCallback 
 
         try {
             Files.createDirectories(SCREENSHOT_DIRECTORY);
+            // Remove caracteres inadequados para nomes de arquivo e acrescenta data e hora.
             String safeName = testName.replaceAll("[^a-zA-Z0-9._-]", "_");
             String timestamp = LocalDateTime.now().format(TIMESTAMP);
             Path destination = SCREENSHOT_DIRECTORY.resolve(safeName + "-" + timestamp + ".png");

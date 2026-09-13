@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+// Representa o carrinho, onde conferimos os produtos antes de iniciar o checkout.
 public class CartPage extends BasePage {
 
     private final By pageTitle = By.cssSelector("[data-test='title']");
@@ -20,11 +21,13 @@ public class CartPage extends BasePage {
     }
 
     public List<String> productNames() {
+        // Transforma os elementos da tela em uma lista de textos que o teste pode comparar.
         return allVisible(itemNames).stream().map(WebElement::getText).toList();
     }
 
     public CheckoutPage proceedToCheckout() {
         click(checkoutButton);
+        // O clique navega no site; este objeto permite interagir com a próxima etapa.
         return new CheckoutPage(driver);
     }
 }

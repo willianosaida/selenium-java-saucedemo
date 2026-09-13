@@ -4,6 +4,24 @@ Projeto completo de testes automatizados para o site público de demonstração
 [SauceDemo](https://www.saucedemo.com/). Ele foi preparado para ser aberto no
 Visual Studio Code e pode ser usado como estudo ou como base para meu portfólio de QA.
 
+## Roteiro de estudo para quem está começando em QA
+
+1. Comece por `LoginTest.java`: identifique a ação feita na tela e o resultado esperado.
+2. Leia `BaseTest.java` para entender como cada teste ganha um navegador novo e como ele é fechado.
+3. Compare `LoginPage.java` com `LoginTest.java`: a página interage com o site e o teste verifica o comportamento.
+4. Leia `BasePage.java` para entender os localizadores e as esperas pelos elementos.
+5. Avance para `InventoryTest.java` e `CheckoutTest.java` para acompanhar cenários com mais etapas.
+6. Explore `config`, `driver` e `extensions` para entender a configuração e o suporte aos testes.
+
+Pense em cada cenário como **preparação, ação e verificação**. Uma asserção
+(`assertEquals`, `assertTrue`) compara o que aconteceu com o que deveria acontecer.
+Abrir o navegador e clicar nos botões, por si só, não comprova que a funcionalidade está correta.
+Um teste negativo, como login com senha inválida, passa quando o sistema rejeita o acesso como esperado.
+
+Execute primeiro `mvn test -Dtest=LoginTest` e acompanhe o resultado no terminal.
+Como exercício, identifique os dados de entrada e a mensagem esperada em cada caso de login inválido.
+No checkout, observe que o teste confere a apresentação do total, mas ainda não valida seu cálculo.
+
 ## O que o projeto testa
 
 - Login válido.
@@ -19,7 +37,7 @@ e aparecem na própria tela inicial do site.
 
 ## Tecnologias e práticas aplicadas
 
-- Java 25.
+- JDK 25 no pipeline; compilação configurada para Java 17 no `pom.xml`.
 - Selenium WebDriver 4.49.0.
 - JUnit Jupiter 6.1.2.
 - Maven.
@@ -247,7 +265,7 @@ falhar, ela salva a tela em `target/screenshots` antes do encerramento do driver
 ## Integração contínua
 
 O arquivo `.github/workflows/testes.yml` executa os testes automaticamente em
-Chrome headless quando houver push ou pull request nas branches `main` ou `master`.
+Chrome headless quando houver push nas branches `main` ou `master`, ou um pull request.
 Também permite início manual pela aba **Actions** do GitHub.
 
 Mesmo em caso de falha, o workflow publica os relatórios e screenshots como um

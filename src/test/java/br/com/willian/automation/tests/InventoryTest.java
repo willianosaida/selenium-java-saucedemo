@@ -14,11 +14,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+// Verifica comportamentos do catálogo e do carrinho com um usuário autenticado.
 @DisplayName("Catálogo e carrinho")
 class InventoryTest extends BaseTest {
 
     private InventoryPage inventoryPage;
 
+    // O preparo da BaseTest acontece primeiro. Depois fazemos login antes de cada cenário.
     @BeforeEach
     void login() {
         inventoryPage = loginPage.loginSuccessfully(
@@ -30,6 +32,7 @@ class InventoryTest extends BaseTest {
     @Tag("smoke")
     @DisplayName("Deve adicionar um produto ao carrinho")
     void shouldAddProductToCart() {
+        // Preparação: um produto conhecido torna o resultado esperado fácil de conferir.
         String product = "Sauce Labs Backpack";
 
         CartPage cartPage = inventoryPage
@@ -37,6 +40,7 @@ class InventoryTest extends BaseTest {
                 .openCart();
 
         assertTrue(cartPage.isLoaded(), "A página do carrinho deveria ser exibida");
+        // Confere a lista inteira: deve haver somente o produto escolhido.
         assertEquals(List.of(product), cartPage.productNames());
     }
 
@@ -44,8 +48,10 @@ class InventoryTest extends BaseTest {
     @Tag("regression")
     @DisplayName("Deve ordenar os produtos do menor para o maior preço")
     void shouldSortProductsByPriceLowToHigh() {
+        // "lohi" é o valor da opção do site para ordenar do menor para o maior preço.
         inventoryPage.sortBy("lohi");
         List<Double> actualPrices = inventoryPage.displayedPrices();
+        // Ordenamos uma cópia para preservar a ordem real capturada da tela.
         List<Double> sortedPrices = new ArrayList<>(actualPrices);
         sortedPrices.sort(Comparator.naturalOrder());
 
@@ -60,6 +66,7 @@ class InventoryTest extends BaseTest {
                 .addProductToCart("Sauce Labs Backpack")
                 .addProductToCart("Sauce Labs Bike Light");
 
+        // O contador deve refletir os dois produtos adicionados neste cenário.
         assertEquals(2, inventoryPage.cartItemCount());
     }
 }

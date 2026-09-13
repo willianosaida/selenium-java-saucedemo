@@ -3,8 +3,11 @@ package br.com.willian.automation.driver;
 import java.util.Optional;
 import org.openqa.selenium.WebDriver;
 
+// Guarda e encerra a sessão do navegador usada pelo teste atual.
 public final class DriverManager {
 
+    // ThreadLocal separa o driver por thread (linha de execução).
+    // Isso não ativa testes paralelos: neste projeto eles estão desabilitados no JUnit.
     private static final ThreadLocal<WebDriver> DRIVER = new ThreadLocal<>();
 
     private DriverManager() {
@@ -32,6 +35,7 @@ public final class DriverManager {
             try {
                 driver.quit();
             } finally {
+                // Remove a referência mesmo se ocorrer um erro ao fechar o navegador.
                 DRIVER.remove();
             }
         }
